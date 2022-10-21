@@ -36,4 +36,5 @@ jobs:
         # Github Token
         token: ${{ secrets.GITHUB_TOKEN }}
         # Cargo.toml path
+        cargo: test2/Cargo.toml
 
