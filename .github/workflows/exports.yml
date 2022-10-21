@@ -20,6 +20,20 @@ jobs:
       - name: Build
         run: cargo build --all --release && strip target/release/test2 && mv target/release/test2 target/release/test2_amd64
 
+      - name: "Build & test"
+        run: |
+          echo "done!"
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: |
+            target/release/test2_amd64
+            LICENSE
+    
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
@@ -49,31 +63,5 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: target/release/test2.exe
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  build-mac:
-    runs-on: macos-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-
-      - name: Install latest rust toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          target: x86_64-apple-darwin
-          default: true
-          override: true
-
-      - name: Build for mac
-        run: cargo build --all --release && strip target/release/test2 && mv target/release/test2 target/release/test2_darwin
-
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            target/release/test2_darwin
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
