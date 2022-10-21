@@ -13,15 +13,15 @@ jobs:
         id: compile
         uses: rust-build/rust-build.action@v1.3.2
         with:
-          RUSTTARGET: x86_64-unknown-linux-musl
+          RUSTTARGET: x86_64-pc-windows-gnu
           UPLOAD_MODE: none
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
           name: Binary
           path: |
-            target/release/test2_amd64
-            target/release/test2_amd64_checksum
+            target/release/
+            target/release/
 
       - name: Upload
         run: |
@@ -34,5 +34,4 @@ jobs:
           prerelease: true
           title: "Development Build"
           files: |
-            target/release/test2_amd64
-            LICENSE
+            target/release/Binary.zip
