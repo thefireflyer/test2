@@ -10,4 +10,13 @@ env:
   CARGO_TERM_COLOR: always
   
 jobs:
-  
+  generate_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: release-tag new action
+        # You may pin to the exact commit or the version.
+        # uses: rohailkhaniazi/release-action@9b5a003e896d1b5a5f0bbadc7de9f0d04b931142
+        uses: rohailkhaniazi/release-action@mar
+        with:
+          # The bumping scheme to use by default. One of minor|major|patch|norelease
+          bump_version_scheme: patch
