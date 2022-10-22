@@ -47,5 +47,5 @@ jobs:
           files: |
             ${{ steps.compile.outputs.BUILT_ARCHIVE }}
             ${{ steps.compile.outputs.BUILT_CHECKSUM }}
-            ${{ steps.compile.outputs2.BUILT_ARCHIVE }}
-            ${{ steps.compile.outputs2.BUILT_CHECKSUM }}
+            ${{ steps.compile2.outputs.BUILT_ARCHIVE }}
+            ${{ steps.compile2.outputs.BUILT_CHECKSUM }}
