@@ -1,14 +1,24 @@
-name: Auto release
+name: Auto release/check
 
-on: [push]
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
 
-  build-win:
+  create-development-build:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@master
+      
+      - name: Build
+        run: cargo build --verbose
+      - name: Run tests
+        run: cargo test --verbose
+      
       - name: Compile
         id: compile
         uses: rust-build/rust-build.action@v1.3.2
@@ -37,7 +47,7 @@ jobs:
             ${{ steps.compile2.outputs.BUILT_ARCHIVE }}
             ${{ steps.compile2.outputs.BUILT_CHECKSUM }}
             
-      - name: Upload
+      - name: Release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
