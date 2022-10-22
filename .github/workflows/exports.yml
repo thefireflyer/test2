@@ -6,19 +6,6 @@ jobs:
 
   build-win:
     runs-on: ubuntu-latest
-    
-    name: release ${{ matrix.target }}
-
-    strategy:
-          fail-fast: false
-          matrix:
-            include:
-              - target: x86_64-pc-windows-gnu
-                archive: zip
-              - target: x86_64-unknown-linux-musl
-                archive: tar.gz tar.xz
-              - target: x86_64-apple-darwin
-                archive: zip
 
     steps:
       - uses: actions/checkout@master
@@ -26,8 +13,7 @@ jobs:
         id: compile
         uses: rust-build/rust-build.action@v1.3.2
         with:
-          RUSTTARGET: ${{ matrix.target }}
-          ARCHIVE_TYPES: ${{ matrix.archive }}
+          RUSTTARGET: x86_64-pc-windows-gnu
           UPLOAD_MODE: none
       - name: Upload artifact
         uses: actions/upload-artifact@v3
@@ -36,7 +22,21 @@ jobs:
           path: |
             ${{ steps.compile.outputs.BUILT_ARCHIVE }}
             ${{ steps.compile.outputs.BUILT_CHECKSUM }}
-
+            
+      - name: Compile
+        id: compile2
+        uses: rust-build/rust-build.action@v1.3.2
+        with:
+          RUSTTARGET: x86_64-unknown-linux-musl
+          UPLOAD_MODE: none
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Binary
+          path: |
+            ${{ steps.compile2.outputs.BUILT_ARCHIVE }}
+            ${{ steps.compile2.outputs.BUILT_CHECKSUM }}
+            
       - name: Upload
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
@@ -47,3 +47,5 @@ jobs:
           files: |
             ${{ steps.compile.outputs.BUILT_ARCHIVE }}
             ${{ steps.compile.outputs.BUILT_CHECKSUM }}
+            ${{ steps.compile.outputs2.BUILT_ARCHIVE }}
+            ${{ steps.compile.outputs2.BUILT_CHECKSUM }}
