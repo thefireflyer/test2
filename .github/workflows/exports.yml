@@ -20,13 +20,10 @@ jobs:
         with:
           name: Binary
           path: |
-            target/release/
-            target/release/
+            ${{ steps.compile.outputs.BUILT_ARCHIVE }}
+            ${{ steps.compile.outputs.BUILT_CHECKSUM }}
 
       - name: Upload
-        run: |
-          echo "done!"
-
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -34,4 +31,5 @@ jobs:
           prerelease: true
           title: "Development Build"
           files: |
-            target/release/Binary.zip
+            ${{ steps.compile.outputs.BUILT_ARCHIVE }}
+            ${{ steps.compile.outputs.BUILT_CHECKSUM }}
